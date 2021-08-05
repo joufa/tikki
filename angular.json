@@ -64,7 +64,10 @@
               "browserTarget": "tikki:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "proxyConfig": "apps/tikki/proxy.conf.json"
+          }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -86,6 +89,77 @@
           "outputs": ["coverage/apps/tikki"],
           "options": {
             "jestConfig": "apps/tikki/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "tikki-backend": {
+      "root": "apps/tikki-backend",
+      "sourceRoot": "apps/tikki-backend/src",
+      "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/apps/tikki-backend",
+            "main": "apps/tikki-backend/src/main.ts",
+            "tsConfig": "apps/tikki-backend/tsconfig.app.json",
+            "assets": ["apps/tikki-backend/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/tikki-backend/src/environments/environment.ts",
+                  "with": "apps/tikki-backend/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "tikki-backend:build"
+          }
+        },
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["apps/tikki-backend/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/apps/tikki-backend"],
+          "options": {
+            "jestConfig": "apps/tikki-backend/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "tikki-domain": {
+      "root": "libs/tikki-domain",
+      "sourceRoot": "libs/tikki-domain/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/tikki-domain/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/tikki-domain"],
+          "options": {
+            "jestConfig": "libs/tikki-domain/jest.config.js",
             "passWithNoTests": true
           }
         }

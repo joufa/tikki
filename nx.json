@@ -22,6 +22,12 @@
     "tikki": {
       "tags": []
     },
+    "tikki-backend": {
+      "tags": []
+    },
+    "tikki-domain": {
+      "tags": []
+    },
     "tikki-e2e": {
       "tags": [],
       "implicitDependencies": ["tikki"]
